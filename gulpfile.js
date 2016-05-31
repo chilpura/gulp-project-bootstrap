@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename');
+require('gulp-grunt')(gulp);
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -13,7 +14,7 @@ var browserSync = require('browser-sync');
 gulp.task('browser-sync', function() {
   browserSync({
     server: {
-       baseDir: "./"
+       baseDir: "./dist/"
     }
   });
 });
@@ -59,8 +60,13 @@ gulp.task('scripts', function(){
     .pipe(browserSync.reload({stream:true}))
 });
 
-gulp.task('default', ['browser-sync'], function(){
+gulp.task('default', ['grunt-includereplace', 'browser-sync'], function(){
+  //gulp.start('grunt-includereplace');
   gulp.watch("src/styles/**/*.scss", ['styles']);
   gulp.watch("src/scripts/**/*.js", ['scripts']);
-  gulp.watch("*.html", ['bs-reload']);
+  gulp.watch("*.html", ['grunt-includereplace', 'bs-reload']);
 });
+
+// gulp.task('default', function() {
+//     gulp.start('grunt-includereplace');
+// });
