@@ -5764,3 +5764,6 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+
+body {
+  background-color: pink; }

@@ -14,7 +14,7 @@ var browserSync = require('browser-sync');
 gulp.task('browser-sync', function() {
   browserSync({
     server: {
-       baseDir: "./dist/"
+       baseDir: "dist"
     }
   });
 });
@@ -30,7 +30,7 @@ gulp.task('images', function(){
 });
 
 gulp.task('styles', function(){
-  gulp.src(['src/styles/**/*.scss'])
+  gulp.src(['src/css/**/*.scss'])
     .pipe(plumber({
       errorHandler: function (error) {
         console.log(error.message);
@@ -38,35 +38,31 @@ gulp.task('styles', function(){
     }}))
     .pipe(sass())
     .pipe(autoprefixer('last 2 versions'))
-    .pipe(gulp.dest('dist/styles/'))
+    .pipe(gulp.dest('dist/css/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
-    .pipe(gulp.dest('dist/styles/'))
+    .pipe(gulp.dest('dist/css/'))
     .pipe(browserSync.reload({stream:true}))
 });
 
 gulp.task('scripts', function(){
-  return gulp.src('src/scripts/**/*.js')
+  return gulp.src('src/js/**/*.js')
     .pipe(plumber({
       errorHandler: function (error) {
         console.log(error.message);
         this.emit('end');
     }}))
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('dist/scripts/'))
+    .pipe(concat('scripts.js'))
+    .pipe(gulp.dest('dist/js/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(gulp.dest('dist/scripts/'))
+    .pipe(gulp.dest('dist/js/'))
     .pipe(browserSync.reload({stream:true}))
 });
 
-gulp.task('default', ['grunt-includereplace', 'browser-sync'], function(){
-  //gulp.start('grunt-includereplace');
-  gulp.watch("src/styles/**/*.scss", ['styles']);
-  gulp.watch("src/scripts/**/*.js", ['scripts']);
-  gulp.watch("*.html", ['grunt-includereplace', 'bs-reload']);
+gulp.task('default', ['browser-sync'], function(){
+  gulp.watch("src/css/**/*.scss", ['styles']);
+  gulp.watch("src/js/**/*.js", ['scripts']);
+  gulp.watch("**/*.html", ['grunt-includereplace'], browserSync.reload);
+  gulp.watch("**/*.html", browserSync.reload);
 });
-
-// gulp.task('default', function() {
-//     gulp.start('grunt-includereplace');
-// });
