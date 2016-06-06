@@ -1,0 +1,11 @@
+{
+    "pageTitle": "This is content from .json",
+    "title": "Content",
+    "benefits": [
+        "Fast",
+        "Flexible",
+        "Secure",
+        "yada",
+        "xxxff"
+    ]
+}

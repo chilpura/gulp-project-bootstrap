@@ -1,7 +1,6 @@
 var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename');
-require('gulp-grunt')(gulp);
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -10,11 +9,13 @@ var imagemin = require('gulp-imagemin'),
 var minifycss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
+var data = require('gulp-data');
+var path = require('path');
 
 gulp.task('browser-sync', function() {
   browserSync({
     server: {
-       baseDir: "dist"
+       baseDir: "./dist"
     }
   });
 });
@@ -30,7 +31,7 @@ gulp.task('images', function(){
 });
 
 gulp.task('styles', function(){
-  gulp.src(['src/css/**/*.scss'])
+  gulp.src(['src/styles/**/*.scss'])
     .pipe(plumber({
       errorHandler: function (error) {
         console.log(error.message);
@@ -60,9 +61,19 @@ gulp.task('scripts', function(){
     .pipe(browserSync.reload({stream:true}))
 });
 
-gulp.task('default', ['browser-sync'], function(){
-  gulp.watch("src/css/**/*.scss", ['styles']);
+gulp.task('compile', function () {
+    'use strict';
+    var twig = require('gulp-twig');
+    return gulp.src('src/*.html')
+        .pipe(data(function(file) {
+          return require('./data/' + path.basename(file.path) + '.json');
+        }))
+        .pipe(twig())
+        .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('default', ['browser-sync', 'compile'], function(){
+  gulp.watch("src/styles/**/*.scss", ['styles']);
   gulp.watch("src/js/**/*.js", ['scripts']);
-  gulp.watch("**/*.html", ['grunt-includereplace'], browserSync.reload);
-  gulp.watch("**/*.html", browserSync.reload);
+  gulp.watch("src/**/*.html", ['bs-reload', 'compile']);
 });
