@@ -1,12 +1,12 @@
 {
-  "name": "Quench",
+  "name": "Gulp project starter files",
   "version": "1.0.0",
-  "description": "A Gulp file and project generator.",
+  "description": "Starter files with gulp and some helpers",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Quench",
+  "author": "Matti",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "2.6.5",
