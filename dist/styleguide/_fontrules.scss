@@ -1,0 +1,21 @@
+/* FONT RULES */
+
+@font-face {
+  font-family: 'GT Walsheim Black';
+  src: url('../assets/fonts/gt-walsheim-black-webfont.eot?#iefix') format('eot'), 
+    url('../assets/fonts/gt-walsheim-black-webfont.woff') format('woff'), 
+    url('../assets/fonts/gt-walsheim-black-webfont.woff2') format('woff2'), 
+    url('../assets/fonts/gt-walsheim-black-webfont.ttf') format('truetype');
+font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GT Walsheim Bold';
+  src: url('../assets/fonts/gt-walsheim-bold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/gt-walsheim-bold-webfont.woff2') format('woff2'), 
+    url('../assets/fonts/gt-walsheim-bold-webfont.woff') format('woff'), 
+    url('../assets/fonts/gt-walsheim-bold-webfont.ttf') format('truetype');
+font-weight: 700;
+  font-style: normal;
+}
