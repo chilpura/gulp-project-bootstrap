@@ -11,6 +11,8 @@ var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var data = require('gulp-data');
 var path = require('path');
+var styleguide = require('sc5-styleguide');
+var outputPath = 'dist/styleguide';
 
 gulp.task('browser-sync', function() {
   browserSync({
@@ -72,8 +74,32 @@ gulp.task('compile', function () {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['browser-sync', 'compile'], function(){
-  gulp.watch("src/styles/**/*.scss", ['styles']);
+gulp.task('styleguide:generate', function() {
+  return gulp.src('src/styles/*.scss')
+    .pipe(styleguide.generate({
+        title: 'My Styleguide',
+        server: true,
+        port: 8000,
+        rootPath: outputPath,
+        overviewPath: 'styleguide.md'
+      }))
+    .pipe(gulp.dest(outputPath));
+});
+
+gulp.task('styleguide:applystyles', function() {
+  return gulp.src('src/styles/app.scss')
+    .pipe(sass({
+      errLogToConsole: true
+    }))
+    .pipe(styleguide.applyStyles())
+    .pipe(gulp.dest(outputPath));
+});
+
+gulp.task('default', ['browser-sync', 'styleguide', 'compile'], function(){
+  gulp.watch("src/styles/**/*.scss", ['styleguide', 'styles']);
   gulp.watch("src/js/**/*.js", ['scripts']);
   gulp.watch("src/**/*.html", ['bs-reload', 'compile']);
+  // gulp.watch(['scss/*.scss'], ['styleguide']);
 });
+
+gulp.task('styleguide', ['browser-sync', 'styleguide:generate', 'styleguide:applystyles']);
